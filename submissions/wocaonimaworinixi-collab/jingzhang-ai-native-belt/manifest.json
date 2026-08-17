@@ -1,5 +1,5 @@
 {
-  "schema_version": "0.1.0",
+  "schema_version": "0.2.0",
   "package_id": "jingzhang-ai-native-belt",
   "project_id": "centennial-jingzhang-ai-belt",
   "site_package_version": "0.1.0",
@@ -340,7 +340,7 @@
       "role": "narrative",
       "language": "zh",
       "required": true,
-      "sha256": "0e620c07e4f9ab559dfd6f331fe52afe30774f4bbb693478a1c8454d32399c55"
+      "sha256": "e14e340b8121d46382b202d5daf7dd22b94d8f98b3d64cbbce4ba2ff585151c3"
     },
     {
       "path": "report/copyright_statement.md",
@@ -383,7 +383,7 @@
       "role": "self_check",
       "language": "neutral",
       "required": true,
-      "sha256": "cab3eb33f7467b68a0d8b6eec1f60c96d359f8f56a615311a9eaed3576fc13f1"
+      "sha256": "02c79cd064c39b500cf1745c34fa901dc354397a47b98e41effb0e31d34381aa"
     },
     {
       "path": "simulation.json",
