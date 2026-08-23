@@ -1,0 +1,25 @@
+{
+  "schema_version": "0.1.0",
+  "files": [
+    {
+      "path": "manifest.json",
+      "role": "manifest",
+      "language": "neutral",
+      "required": true
+    },
+    {
+      "path": "metrics.json",
+      "role": "metrics",
+      "language": "neutral",
+      "required": true,
+      "sha256": "f4021ef0058fd82bed2b4596046ac69fb975d7d0c74da219fd6e19cb7b40d169"
+    },
+    {
+      "path": "visual/assets/z1_z3_pilot_gate.json",
+      "role": "verification_script",
+      "language": "neutral",
+      "required": true,
+      "sha256": "2bd0d02884dc0ef94a2a510752be4ab3f4249da35861b463a0a02d44041e43e6"
+    }
+  ]
+}

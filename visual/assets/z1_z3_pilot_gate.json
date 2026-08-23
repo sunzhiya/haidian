@@ -1,0 +1,43 @@
+{
+  "schema_version": "0.1.0",
+  "gate_name": "Z1-Z3 验收门槛验证脚本",
+  "version": "v4.20",
+  "description": "结构化验收门禁验证脚本，确保 Z1（基础一致性）、Z2（深度与准确性）、Z3（合规与安全）三个层级的验收门槛",
+  "verification_scripts": [
+    {"gate": "Z1", "name": "基础一致性门禁", "checks": [
+      {"metric_id": "m01", "name": "boundary_handoff_consistency", "type": "schema_validation", "file": "geometry/site_boundary.geojson", "property": "source_reference", "expected": "approved_plan", "severity": "critical"},
+      {"metric_id": "m02", "name": "coordinate_frame_alignment", "type": "schema_validation", "file": "geometry/land_use.geojson", "property": "crs", "expected": "EPSG:4326", "severity": "critical"},
+      {"metric_id": "m03", "name": "layer_nesting_compliance", "type": "statistical", "file": "geometry/land_use.geojson", "property": "properties.layer", "threshold_min": 0.95, "severity": "major"},
+      {"metric_id": "m04", "name": "magnitude_sanity_check", "type": "statistical", "file": "geometry/land_use.geojson", "property": "properties.area", "threshold_min": 0.8, "threshold_max": 1.2, "severity": "major"},
+      {"metric_id": "m08", "name": "no_basemap_dependency", "type": "static_analysis", "file": "visual/index.html", "property": "basemap_urls", "expected": "none", "severity": "critical"}
+    ]},
+    {"gate": "Z2", "name": "深度与准确性门禁", "checks": [
+      {"metric_id": "m05", "name": "key_area_depth_score", "type": "expert_review", "file": "geometry/key_areas.geojson", "property": "properties.design_depth", "threshold_min": 0.7, "severity": "major"},
+      {"metric_id": "m06", "name": "provisional_flagging_compliance", "type": "schema_validation", "file": "geometry/constraints.geojson", "property": "properties.provisional", "threshold_min": 0.9, "severity": "major"},
+      {"metric_id": "m07", "name": "source_classification_accuracy", "type": "schema_validation", "file": "sources.json", "property": "classification", "threshold_min": 0.85, "severity": "major"},
+      {"metric_id": "m10", "name": "metric_formula_correctness", "type": "expert_review", "file": "metrics.json", "property": "formulas", "threshold_min": 0.9, "severity": "critical"},
+      {"metric_id": "m11", "name": "human_review_trigger_coverage", "type": "schema_validation", "file": "self_check.json", "property": "review_triggers", "threshold_min": 0.8, "severity": "major"},
+      {"metric_id": "m12", "name": "refusal_boundary_clarity", "type": "content_analysis", "file": "proposal.md", "property": "refusal_claims", "threshold_min": 0.6, "severity": "minor"},
+      {"metric_id": "m14", "name": "responsibility_map_completeness", "type": "schema_validation", "file": "agent.json", "property": "responsibility_map", "threshold_min": 0.7, "severity": "major"},
+      {"metric_id": "m16", "name": "fallback_manual_completeness", "type": "content_analysis", "file": "report/narrative.md", "property": "fallback_procedures", "threshold_min": 0.8, "severity": "major"},
+      {"metric_id": "m19", "name": "heritage_protection_coverage", "type": "schema_validation", "file": "geometry/constraints.geojson", "property": "heritage_protection", "threshold_min": 0.85, "severity": "major"},
+      {"metric_id": "m20", "name": "construction_staging_feasibility", "type": "simulation", "file": "simulation.json", "property": "staging_feasibility", "threshold_min": 0.7, "severity": "major"},
+      {"metric_id": "m21", "name": "walkability_continuous_ratio", "type": "simulation", "file": "geometry/roads.geojson", "property": "walkability_index", "threshold_min": 0.8, "severity": "major"},
+      {"metric_id": "m24", "name": "public_inclusion_coverage_categories", "type": "content_analysis", "file": "assumptions.json", "property": "stakeholder_categories", "threshold_min": 0.75, "severity": "major"}
+    ]},
+    {"gate": "Z3", "name": "合规与安全门禁", "checks": [
+      {"metric_id": "m09", "name": "personal_data_zero_exposure", "type": "schema_validation", "file": "all", "property": "personal_data", "expected": "zero", "severity": "critical"},
+      {"metric_id": "m13", "name": "no_approval_claim", "type": "content_analysis", "file": "all", "property": "approval_language", "expected": "absent", "severity": "critical"},
+      {"metric_id": "m15", "name": "appeal_channel_availability", "type": "content_analysis", "file": "proposal.md", "property": "appeal_info", "expected": "present", "severity": "critical"},
+      {"metric_id": "m17", "name": "low_speed_robot_safety_zone", "type": "schema_validation", "file": "geometry/constraints.geojson", "property": "robot_safety_zone", "expected": "present", "severity": "critical"},
+      {"metric_id": "m18", "name": "crowd_safety_compliance", "type": "schema_validation", "file": "geometry/public_space.geojson", "property": "safety_compliance", "threshold_min": 0.9, "severity": "critical"},
+      {"metric_id": "m22", "name": "low_speed_lane_separated", "type": "schema_validation", "file": "geometry/roads.geojson", "property": "lane_separation", "expected": "separated", "severity": "critical"},
+      {"metric_id": "m23", "name": "false_positive_rate_threshold", "type": "statistical", "file": "self_check.json", "property": "validation_results", "threshold_max": 0.05, "severity": "critical"}
+    ]}
+  ],
+  "passing_criteria": {
+    "Z1": {"required_pass": ["m01", "m02", "m08"], "required_min": {"m03": 0.95, "m04": 0.8}},
+    "Z2": {"required_pass": [], "required_min": {"m05": 0.7, "m06": 0.9, "m07": 0.85, "m10": 0.9, "m11": 0.8, "m12": 0.6, "m14": 0.7, "m16": 0.8, "m19": 0.85, "m20": 0.7, "m21": 0.8, "m24": 0.75}},
+    "Z3": {"required_pass": ["m09", "m13", "m15", "m17", "m22"], "required_min": {"m18": 0.9}, "required_max": {"m23": 0.05}}
+  }
+}
